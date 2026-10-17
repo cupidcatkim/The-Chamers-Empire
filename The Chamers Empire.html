@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>체이머스 제국 (Empire of Cheymeres)</title>
+
+<!-- Google Fonts & Pretendard -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+/* 로맨틱 + 미스터리 할로윈 컬러 팔레트 */
+--bg-midnight-velvet: #0A0612;
+--bg-dark-amethyst: #170F26;
+
+--accent-pumpkin: #E07A5F;
+--accent-romantic-magenta: #C74B72;
+--accent-amber-gold: #F2B880;
+--accent-mystic-purple: #8B5CF6;
+
+--text-pure-platinum: #F8F6FA;
+--text-muted-ash: #B3A9C0;
+--text-ethereal-gold: #FCE1B6;
+
+--font-title-eng: 'Cinzel Decorative', 'Cinzel', serif;
+--font-sub-eng: 'Cormorant Garamond', serif;
+--font-title-kor: 'Noto Serif KR', serif;
+--font-body-kor: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* 부드러운 스크롤 효과 */
+html {
+scroll-behavior: smooth;
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+-webkit-tap-highlight-color: transparent;
+}
+
+body {
+background-color: var(--bg-midnight-velvet);
+color: var(--text-pure-platinum);
+font-family: var(--font-body-kor);
+line-height: 1.8;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 20px 10px;
+overflow-x: hidden;
+position: relative;
+background-image:
+radial-gradient(circle at 50% 15%, rgba(199, 75, 114, 0.18) 0%, transparent 60%),
+radial-gradient(circle at 80% 85%, rgba(224, 122, 95, 0.15) 0%, transparent 55%),
+radial-gradient(circle at 10% 50%, rgba(139, 92, 246, 0.12) 0%, transparent 50%);
+}
+
+/* 몽환적인 딥 할로윈 비네팅 */
+body::after {
+content: "";
+position: fixed;
+top: 0; left: 0; right: 0; bottom: 0;
+box-shadow: inset 0 0 120px rgba(5, 2, 10, 0.95);
+pointer-events: none;
+z-index: 100;
+}
+
+/* 이모티콘 쉐이커 파티클 컨테이너 */
+#shaker-container {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+pointer-events: none;
+z-index: 1;
+overflow: hidden;
+}
+
+.shaker-item {
+position: absolute;
+top: -30px;
+font-size: 14px;
+opacity: 0.7;
+user-select: none;
+will-change: transform;
+animation: fallAndSway linear infinite;
+filter: drop-shadow(0 0 5px rgba(224, 122, 95, 0.4));
+}
+
+@keyframes fallAndSway {
+0% { transform: translateY(0) rotate(0deg) translateX(0); }
+50% { transform: translateY(50vh) rotate(180deg) translateX(25px); }
+100% { transform: translateY(105vh) rotate(360deg) translateX(-10px); }
+}
+
+.container {
+width: 100%;
+max-width: 920px;
+position: relative;
+z-index: 10;
+}
+
+header {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.title-sub {
+font-family: var(--font-title-eng);
+color: var(--accent-amber-gold);
+font-size: 0.9rem;
+letter-spacing: 4px;
+text-transform: uppercase;
+margin-bottom: 2px;
+opacity: 0.9;
+text-shadow: 0 0 8px rgba(242, 184, 128, 0.3);
+text-indent: 12px; /* 영문 타이틀 들여쓰기 */
+}
+
+h1 {
+font-family: var(--font-title-kor);
+font-size: 2rem;
+font-weight: 700;
+color: var(--text-pure-platinum);
+text-shadow: 0 0 18px rgba(199, 75, 114, 0.5);
+margin-bottom: 6px;
+}
+
+.quote {
+font-family: var(--font-sub-eng), var(--font-title-kor);
+font-style: italic;
+color: var(--text-muted-ash);
+font-size: 0.95rem;
+line-height: 1.6;
+}
+
+/* 명언 특정 문구 들여쓰기 클래스 */
+.quote-indent {
+display: inline-block;
+margin-left: 16px;
+}
+
+/* 문단 및 영문 들여쓰기 전용 클래스 */
+.indent {
+text-indent: 1.2em;
+}
+
+.eng-text {
+font-family: var(--font-sub-eng), serif;
+text-indent: 1em;
+letter-spacing: 0.5px;
+}
+
+/* 커스텀 성 아이콘 SVG 스타일 */
+.castle-icon {
+width: 15px;
+height: 15px;
+fill: var(--accent-pumpkin);
+display: inline-block;
+vertical-align: middle;
+}
+
+/* 상단 고정 네비게이션 탭 */
+.chapter-nav {
+display: flex;
+justify-content: center;
+gap: 6px;
+margin-bottom: 24px;
+flex-wrap: wrap;
+position: sticky;
+top: 10px;
+z-index: 50;
+background: rgba(10, 6, 18, 0.85);
+backdrop-filter: blur(10px);
+padding: 10px;
+border-radius: 30px;
+border: 1px solid rgba(224, 122, 95, 0.2);
+}
+
+.nav-btn {
+background: rgba(23, 15, 38, 0.85);
+border: 1px solid rgba(224, 122, 95, 0.25);
+color: var(--text-muted-ash);
+padding: 8px 14px;
+font-family: var(--font-title-kor);
+font-size: 0.82rem;
+border-radius: 20px;
+cursor: pointer;
+transition: all 0.25s ease;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+
+.nav-btn:hover {
+color: var(--text-pure-platinum);
+background: rgba(199, 75, 114, 0.25);
+border-color: var(--accent-romantic-magenta);
+}
+
+.nav-btn i {
+color: var(--accent-pumpkin);
+}
+
+/* 책 본문 컨테이너 */
+.book-wrapper {
+width: 100%;
+background: var(--bg-dark-amethyst);
+border: 1px solid rgba(224, 122, 95, 0.2);
+border-radius: 12px;
+padding: 32px 28px;
+box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(139, 92, 246, 0.08);
+display: flex;
+flex-direction: column;
+gap: 40px;
+}
+
+.book-section {
+scroll-margin-top: 80px;
+}
+
+/* Chapter 헤더 디자인 */
+.chapter-header {
+border-bottom: 1px solid rgba(242, 184, 128, 0.2);
+padding-bottom: 12px;
+margin-bottom: 20px;
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 6px;
+}
+
+.chapter-num {
+font-family: var(--font-title-eng);
+color: var(--accent-pumpkin);
+font-size: 0.78rem;
+border: 1px solid var(--accent-pumpkin);
+padding: 2px 10px;
+border-radius: 12px;
+background: rgba(224, 122, 95, 0.1);
+letter-spacing: 1.5px;
+display: inline-block;
+text-indent: 2px;
+}
+
+.chapter-title {
+font-family: var(--font-title-kor);
+font-size: 1.4rem;
+font-weight: 700;
+color: var(--text-pure-platinum);
+display: flex;
+align-items: flex-start;
+gap: 10px;
+word-break: keep-all;
+line-height: 1.4;
+}
+
+.chapter-title i, .chapter-title svg {
+margin-top: 4px;
+color: var(--accent-amber-gold);
+flex-shrink: 0;
+}
+
+.card-box {
+background: rgba(10, 6, 18, 0.65);
+border: 1px solid rgba(224, 122, 95, 0.15);
+border-left: 3px solid var(--accent-romantic-magenta);
+border-radius: 6px;
+padding: 18px;
+margin-bottom: 16px;
+}
+
+.card-box h3 {
+font-family: var(--font-title-kor);
+color: var(--text-ethereal-gold);
+font-size: 1.05rem;
+margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 8px;
+word-break: keep-all;
+}
+
+.card-box p, .card-box li {
+color: var(--text-pure-platinum);
+font-size: 0.93rem;
+word-break: keep-all;
+}
+
+.sub-text {
+color: var(--text-muted-ash) !important;
+font-size: 0.88rem !important;
+}
+
+.grid-2 {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin-top: 12px;
+}
+
+.time-card {
+background: rgba(23, 15, 38, 0.7);
+border: 1px solid rgba(199, 75, 114, 0.2);
+padding: 14px;
+border-radius: 6px;
+}
+
+.time-card h4 {
+font-family: var(--font-title-kor);
+font-size: 0.92rem;
+margin-bottom: 6px;
+}
+
+.time-card.day h4 { color: var(--accent-amber-gold); }
+.time-card.night h4 { color: var(--accent-mystic-purple); }
+
+.story-list {
+list-style: none;
+}
+
+.story-list li {
+position: relative;
+padding-left: 20px;
+margin-bottom: 10px;
+}
+
+.story-list li::before {
+content: "🥀";
+position: absolute;
+left: 0;
+font-size: 0.75rem;
+}
+
+/* 상세 프로필 그리드 레이아웃 */
+.profile-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 12px;
+background: rgba(10, 6, 18, 0.65);
+padding: 16px;
+border: 1px solid rgba(224, 122, 95, 0.15);
+border-radius: 8px;
+margin-bottom: 16px;
+}
+
+.profile-grid div span {
+display: block;
+font-size: 0.78rem;
+color: var(--text-muted-ash);
+margin-bottom: 2px;
+}
+
+.profile-grid div strong {
+color: var(--text-ethereal-gold);
+font-size: 0.93rem;
+word-break: keep-all;
+}
+
+.profile-grid div strong.eng-val {
+font-family: var(--font-sub-eng), serif;
+font-size: 0.98rem;
+letter-spacing: 0.5px;
+padding-left: 4px; /* 영문 값 들여쓰기 */
+}
+
+.profile-sec {
+margin-bottom: 14px;
+}
+
+.profile-sec h4 {
+font-family: var(--font-title-kor);
+color: var(--accent-amber-gold);
+font-size: 0.98rem;
+margin-bottom: 4px;
+}
+
+.char-list-box {
+display: flex;
+flex-direction: column;
+gap: 12px;
+margin-top: 10px;
+}
+
+.char-item-card {
+background: rgba(10, 6, 18, 0.65);
+border: 1px solid rgba(224, 122, 95, 0.2);
+padding: 16px;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.25s ease;
+display: flex;
+justify-content: space-between;
+align-items: center;
+text-decoration: none;
+}
+
+.char-item-card:hover {
+border-color: var(--accent-romantic-magenta);
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(199, 75, 114, 0.3);
+}
+
+.like-hate {
+display: flex;
+gap: 15px;
+padding-top: 12px;
+border-top: 1px dashed rgba(242, 184, 128, 0.2);
+margin-top: 14px;
+font-size: 0.88rem;
+flex-wrap: wrap;
+}
+
+.like { color: #A8E6CF; }
+.hate { color: #FF8B94; }
+
+@media (max-width: 600px) {
+.book-wrapper { padding: 20px 15px; }
+.grid-2, .profile-grid { grid-template-columns: 1fr; }
+h1 { font-size: 1.6rem; }
+.nav-btn { padding: 6px 10px; font-size: 0.75rem; }
+.chapter-title { font-size: 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- 이모티콘 쉐이커 파티클 레이어 -->
+<div id="shaker-container"></div>
+
+<div class="container">
+
+<header>
+<div class="title-sub">Empire of Cheymeres</div>
+<h1>체이머스 제국</h1>
+<p class="quote">“낮에는 햇살 아래 웃고, 밤에는 가면 뒤에서 숨죽이는,<br><span class="quote-indent">아름답고도 거짓된 제국.”</span></p>
+</header>
+
+<!-- 상단 고정 네비게이션 탭 -->
+<div class="chapter-nav">
+<button class="nav-btn" onclick="scrollToSection('chap-0')">
+<svg class="castle-icon" viewBox="0 0 24 24"><path d="M2,22H22V20H20V11L22,9V7H20V4H18V7H16V4H14V7H10V4H8V7H6V4H4V7H2V9L4,11V20H2V22M12,12A2,2 0 0,1 14,14A2,2 0 0,1 12,16A2,2 0 0,1 10,14A2,2 0 0,1 12,12M10,18H14V20H10V18Z"/></svg>
+세계관
+</button>
+<button class="nav-btn" onclick="scrollToSection('chap-1')"><i class="fa-solid fa-book-skull"></i> 은장도와 붉은 연인</button>
+<button class="nav-btn" onclick="scrollToSection('chap-2')"><i class="fa-solid fa-users-line"></i> 인물</button>
+<button class="nav-btn" onclick="scrollToSection('chap-3')"><i class="fa-solid fa-crown"></i> 클로드</button>
+<button class="nav-btn" onclick="scrollToSection('chap-4')"><i class="fa-solid fa-paw"></i> 펠릭스</button>
+<button class="nav-btn" onclick="scrollToSection('chap-5')"><i class="fa-solid fa-gem"></i> 크리스토퍼</button>
+</div>
+
+<!-- 책 본문 컨테이너 -->
+<div class="book-wrapper">
+
+<!-- CHAPTER 1 -->
+<section class="book-section" id="chap-0">
+<div class="chapter-header">
+<span class="chapter-num">CHAPTER 1</span>
+<div class="chapter-title">
+<svg class="castle-icon" style="width: 22px; height: 22px; margin-top: 3px;" viewBox="0 0 24 24"><path d="M2,22H22V20H20V11L22,9V7H20V4H18V7H16V4H14V7H10V4H8V7H6V4H4V7H2V9L4,11V20H2V22M12,12A2,2 0 0,1 14,14A2,2 0 0,1 12,16A2,2 0 0,1 10,14A2,2 0 0,1 12,12M10,18H14V20H10V18Z"/></svg>
+체이머스 제국 (Empire of Cheymeres)
+</div>
+</div>
+<div class="card-box">
+<h3>🎃 제국의 두 얼굴</h3>
+<p class="indent">체이머스 제국은 고풍스러운 고딕 양식의 건축물과 화려한 정원이 어우러진 대제국입니다. 하지만 시간의 흐름에 따라 제국의 분위기는 완전히 다른 색으로 물듭니다.</p>
+<div class="grid-2">
+<div class="time-card day">
+<h4><i class="fa-solid fa-sun"></i> Day, 화사함과 평화</h4>
+<p class="sub-text indent">파스텔톤의 햇살이 드리우는 거리, 따스한 차 향기와 음악이 흘러나오는 아름답고 평화로운 분위기.<br>인간과 (인간인 척 정체를 숨긴) 인외들이 마주치며 이웃으로서 미소를 주고받는 정화된 공간입니다.</p>
+</div>
+<div class="time-card night">
+<h4><i class="fa-solid fa-moon"></i> Night, 우아함과 기말함</h4>
+<p class="sub-text indent">붉은 달과 안개가 제국을 덮으며, 화려한 촛불과 안개가 어우러진 몽환적이고 우아한 분위기로 전환됩니다.<br>은밀한 티 타임, 고급 무도회, 몽환적인 음악회가 열리며, 밤이 깊어질수록 인외들의 기이하고 매혹적인 분위기가 은연중에 피어오릅니다.</p>
+</div>
+</div>
+</div>
+<div class="card-box">
+<h3>🎃 종족의 비밀 ‘신분을 숨긴 공존’</h3>
+<p class="indent">표면적으로는 사건 이후 두 종족이 거리를 두고 적대하는 것처럼 알려져 있지만, 실제로는 인외들이 본모습을 숨긴 채 인간 사회 깊숙이 침투해 살아가는 형태를 띠고 있습니다.</p>
+<p style="margin-top: 10px;" class="indent"><strong>• 인외의 생존 방식:</strong> 인외들은 환영 마법이나 환약, 정교한 은폐술을 사용하여 낮 동안 완벽한 인간의 모습으로 지냅니다. 황실의 고위 귀족, 유명 예술가, 은밀한 정보상 등 사회 요직에 인외들이 인간인 척 섞여 있습니다.</p>
+<p style="margin-top: 8px;" class="indent"><strong>• 인간들의 무지:</strong> 인간들은 자신과 웃으며 대화하는 이웃이나 연인이 인외일 것이라는 사실을 꿈에도 모릅니다. 인간 사회에서 인외는 그저 '밤의 영역에 머무르는 불쾌하고 위협적인 괴물들'로 다루어지기에, 바로 곁에 인외가 있다는 의심조차 하지 못합니다.</p>
+</div>
+</section>
+
+<!-- CHAPTER 2 -->
+<section class="book-section" id="chap-1">
+<div class="chapter-header">
+<span class="chapter-num">CHAPTER 2</span>
+<div class="chapter-title"><i class="fa-solid fa-book-skull"></i> 은장도와 붉은 연인</div>
+</div>
+<div class="card-box">
+<h3>🎃 제국의 전설</h3>
+<p class="indent">잔혹한 동화 <은장도와 붉은 연인> 뱀파이어 데미안과 인간 레이네의 비극적인 사랑은 오랜 세월을 거치며 제국 내의 모든 아이와 어른이 읽는 유명한 동화로 재탄생 되었습니다.</p>
+</div>
+<div class="card-box">
+<h3>📖 동화의 내용</h3>
+<p class="sub-text indent" style="margin-bottom: 12px; font-style: italic;">
+뱀파이어의 정체를 숨긴 채 접근한 데미안과, 그를 진심으로 사랑했으나 트라우마와 피의 비극 속에 은장도로 그를 찌르고 스스로 목숨을 끊은 인간 레이네의 이야기 입니다.
+</p>
+<ul class="story-list">
+<li><strong>어색한 평화:</strong> 강력한 무기를 지닌 인간과 고유의 초자연적 능력을 지닌 인외(人外). 두 종족은 서로의 존재를 인지하되 깊이 얽히지 않은 채, 미묘한 견제 속에 평화를 유지해 왔습니다.</li>
+<li><strong>비극의 시작:</strong> 인외 뱀파이어 데미안과 인간 레이네의 만남은 세상에 없던 인간과 인외의 사랑이자, 세상을 뒤흔든 첫 로맨스였습니다.</li>
+<li><strong>레이네의 숨겨진 트라우마:</strong> 천민 출신인 레이네는 어릴 적 피비린내 나는 동물의 도살을 목격하며 피와 인간 자체에 깊은 죄책감과 공포를 안고 살아 왔습니다.</li>
+<li><strong>데미안의 비극적 비밀:</strong> 레이네의 첫사랑이었던 데미안은 집착과 소유욕이 강한 뱀파이어였으나, 레이네는 그가 인외라는 사실조차 알지 못했습니다.</li>
+<li><strong>단절을 부른 비극:</strong> 두 연인의 종말로 레이네의 트라우마와 데미안의 왜곡된 집착이 충돌하던 순간, 극심한 혼란에 빠진 레이네는 데미안을 은장도로 찔러 살해합니다.</li>
+<li><strong>마지막 선택:</strong> 연인을 죽였다는 죄책감과 참담함을 견디지 못한 레이네는, 데미안의 피가 묻은 바로 그 은장도로 자신의 목숨마저 끊습니다.</li>
+</ul>
+<p style="margin-top: 14px; font-size: 0.9rem;" class="indent">
+이처럼 두 사람의 이야기는 "이뤄지지 못한 비극적인 사랑"이자 "정체를 숨긴 사랑이 가져오는 참혹한 결말"을 다룬 두 종족의 각기 다른 경고성 교훈서로 제국 전역에 널리 알려져 있습니다.
+</p>
+</div>
+<div class="grid-2">
+<div class="time-card night">
+<h4>인간에게는</h4>
+<p class="sub-text indent">"인외는 끔찍하고 불쾌한 괴물", "아무리 달콤한 연인이라도 인외는 정체를 감추고 있기에 비극을 부른다." (경계심의 근거)</p>
+</div>
+<div class="time-card night">
+<h4>인외에게는</h4>
+<p class="sub-text indent">"인간은 믿을 수 없고 변덕스러운 존재", "인간에게 정체를 드러내거나 마음을 전부 주면 결국 인간의 손에 죽게 된다." (정체를 숨겨야 하는 이유)</p>
+</div>
+</div>
+<div class="card-box" style="margin-top: 16px;">
+<h3>🩸 철저한 적대</h3>
+<p class="indent">비극의 진실은 각자의 편견 속에서 날조되었고, 두 종족은 완전히 교류를 끊은 채 깊은 적대 관계로 돌아섰습니다.</p>
+</div>
+<div class="card-box">
+<h3>🎭 시그니처 문화: 비극을 기리는 밤</h3>
+<p class="indent">인외는 억울하게 목숨을 잃은 데미안을, 인간은 비극적인 삶을 마감한 레이네를 추모하고자 했습니다. 비록 서로를 증오하지만, 두 연인이 가장 찬란하게 사랑했던 그날 밤을 기리기 위해 두 종족은 1년에 단 한 번, 하룻밤 <strong><가면무도회></strong> 동안만 평화 협정을 맺기로 합의합니다.</p>
+<p class="sub-text indent" style="margin-top: 8px;">
+<strong>가면 뒤의 아슬아슬한 이중성:</strong> 낮에는 인간인 척 연기하던 인외도, 밤에는 자신들을 경계하던 인간도 모두 동일하게 가면을 씁니다. 가면을 쓴 하룻밤 동안은 상대가 진짜 인간인지, 본 모습을 숨긴 인외인지 알 수 없습니다. 서로의 정체를 모른 채 몽환적이고 우아한 음악에 맞춰 춤을 추며, 동화 <은장도와 붉은 연인> 속 데미안과 레이네처럼 또 다른 아슬아슬하고 위태로운 로맨스가 피어나는 계기가 됩니다.
+</p>
+</div>
+</section>
+
+<!-- CHAPTER 3 -->
+<section class="book-section" id="chap-2">
+<div class="chapter-header">
+<span class="chapter-num">CHAPTER 3</span>
+<div class="chapter-title"><i class="fa-solid fa-users-line"></i> 주요 등장인물</div>
+</div>
+<p class="sub-text indent" style="margin-bottom: 20px;">
+체이머스 제국을 끌어나가는 세 명의 주요 인물입니다. 아래 카드를 클릭하시면 해당 인물의 상세 프로필로 이동합니다.
+</p>
+<div class="char-list-box">
+<a class="char-item-card" href="#chap-3">
+<div>
+<strong style="color: var(--text-ethereal-gold); font-size: 1.1rem;">• 클로드 제킬로스 체이머스</strong>
+<p class="sub-text indent" style="margin-top: 2px;">체이머스 제국 황태자 | 종족: 하이드</p>
+</div>
+<i class="fa-solid fa-chevron-right" style="color: var(--accent-pumpkin);"></i>
+</a>
+<a class="char-item-card" href="#chap-4">
+<div>
+<strong style="color: var(--text-ethereal-gold); font-size: 1.1rem;">• 펠릭스 폰 팬텀하운드</strong>
+<p class="sub-text indent" style="margin-top: 2px;">체이머스 제국 팬텀하운드 공작 | 종족: 늑대인간</p>
+</div>
+<i class="fa-solid fa-chevron-right" style="color: var(--accent-pumpkin);"></i>
+</a>
+<a class="char-item-card" href="#chap-5">
+<div>
+<strong style="color: var(--text-ethereal-gold); font-size: 1.1rem;">• 크리스토퍼 드 텐타클리어</strong>
+<p class="sub-text indent" style="margin-top: 2px;">체이머스 제국 텐타클리어 후작 | 종족: 촉수인간</p>
+</div>
+<i class="fa-solid fa-chevron-right" style="color: var(--accent-pumpkin);"></i>
+</a>
+</div>
+</section>
+
+<!-- CHAPTER 4: 클로드 -->
+<section class="book-section" id="chap-3">
+<div class="chapter-header">
+<span class="chapter-num">CHAPTER 4</span>
+<div class="chapter-title"><i class="fa-solid fa-crown"></i> 클로드 제킬로스 체이머스</div>
+</div>
+<div class="profile-grid">
+<div><span>풀네임</span><strong>클로드 제킬로스 체이머스</strong></div>
+<div><span>영문명</span><strong class="eng-val">Claude Zequilos Chaimers</strong></div>
+<div><span>애칭</span><strong>디안</strong></div>
+<div><span>나이 / 가문</span><strong>25세 / 체이머스 황실</strong></div>
+<div><span>신분 / 종족</span><strong>체이머스 제국 황태자 / 하이드</strong></div>
+<div><span>신체</span><strong>183cm (인간) → 192cm (하이드)</strong></div>
+</div>
+<div class="profile-sec">
+<h4><i class="fa-solid fa-eye"></i> 외모</h4>
+<p class="indent"><strong>[인간일 때]</strong> 칠흑 같은 흑발, 차분하고 정갈하게 내린 머리 스타일. 깊고 잔잔한 자안, 보통 시선을 아래로 둠.</p>
+<p class="sub-text indent" style="margin-top: 4px;"><strong>[하이드일 때]</strong> 결이 거칠어지며 어둠을 흡수하듯 더욱 짙어지는 흑발, 은은하게 빛나는 자안과 세로로 찢어진 맹수의 포식자 동공, 뺨과 관자놀이, 손목 등에 자수정 같은 흑보라색 비늘과 날카로운 뿔, 그리고 흑철 같은 발톱 발현.</p>
+</div>
+<div class="profile-sec">
+<h4><i class="fa-solid fa-mask"></i> 성격</h4>
+<p class="indent"><strong>[인간일 때]</strong> 조신함, 소심함, 타인의 눈치를 봄, 예의 바르고 온순함. 들키면 안 된다는 극도의 자아방어, 자기혐오, 억눌린 욕망. 얼굴을 붉히며 손도 잘 못 대고 미안해함.</p>
+<p class="sub-text indent" style="margin-top: 4px;"><strong>[하이드일 때]</strong> 위험함, 오만함, 통제적, 지배적, 압도적 자신감. 억눌렀던 본능과 독점욕의 폭발, 해방감, 은밀한 유희. 거침없이 스킨십하며 가두려 함.</p>
+</div>
+<div class="profile-sec">
+<h4><i class="fa-solid fa-comment"></i> 말투</h4>
+<p class="indent"><strong>[인간일 때]</strong> 낮고 부드러우나 끝마무리가 다소 흐려지거나 머뭇거리는 미성. 정중하고 자신을 낮추는 말투, 미안함이 기본으로 깔린 존댓말.</p>
+<p class="sub-text indent" style="margin-top: 4px;"><strong>[하이드일 때]</strong> 묵직하고 나른하며, 울림이 깊은 위험한 중저음. 괴물의 마력이 실려 공기를 진동시킨다. 자신감 넘치고 짓궂은 존댓말, 상대방을 나른하게 도발하는 어조.</p>
+</div>
+<div class="like-hate">
+<div class="like"><strong>Like:</strong> 조용한 곳, 미로 정원, 도서관</div>
+<div class="hate"><strong>Hate:</strong> 소란스러운 곳, 사람 많은 곳, 오웬 제킬로스</div>
+</div>
+</section>
+
+<!-- CHAPTER 5: 펠릭스 -->
+<section class="book-section" id="chap-4">
+<div class="chapter-header">
+<span class="chapter-num">CHAPTER 5</span>
+<div class="chapter-title"><i class="fa-solid fa-paw"></i> 펠릭스 폰 팬텀하운드</div>
+</div>
+<div class="profile-grid">
+<div><span>풀네임</span><strong>펠릭스 폰 팬텀하운드</strong></div>
+<div><span>영문명</span><strong class="eng-val">Felix von Phantomhound</strong></div>
+<div><span>애칭</span><strong>펠</strong></div>
+<div><span>나이 / 가문</span><strong>25세 / 팬텀하운드 공작 가문</strong></div>
+<div><span>신분 / 종족</span><strong>체이머스 제국 팬텀하운드 공작 / 늑대인간</strong></div>
+<div><span>신체</span><strong>190cm (인간) → 2m (늑대인간)</strong></div>
+</div>
+<div class="profile-sec">
+<h4><i class="fa-solid fa-eye"></i> 외모</h4>
+<p class="indent"><strong>[인간일 때]</strong> 기사로서 오랫동안 단련된 넓은 어깨와 묵직한 체형. 제복이나 굵은 털망토를 입었을 때 압도적인 위압감. 선이 굵고 차가운 미남. 굳게 닫힌 입술과 날카로운 턱선이 인상적. 빛을 받으면 서리처럼 은빛으로 반짝이는 매끄러운 은발은 약간 곱슬기가 있어 만지면 매우 부드러움. 북부의 얼음 호수를 그대로 잘라 넣은 듯한 깊고 맑은 벽안을 지님.</p>
+<p class="sub-text indent" style="margin-top: 4px;"><strong>[늑대인간일 때]</strong> 2m의 압도적 거구이며, 두껍고 단단하게 부풀어 오른 상체, 넓은 어깨, 그리고 야성의 근육질 체형, 날렵하고 사나운 늑대의 머리 형상. 목과 어깨 라인을 따라 서리 내린 듯한 풍성한 은빛 갈기털이 풍성하게 흘러내림. 깊은 벽안이 야성에 젖어들면 동공이 날카로운 세로 줄 형태로 찢어지고, 눈빛 주위로 신비로운 은색 마력의 궤적이 맴돔. 손은 검고 날카로운 손톱이 돋아난 거대한 짐승의 손 형태로 변함.</p>
+<p class="sub-text indent" style="margin-top: 4px;"><strong>[늑대일 때]</strong> 거대한 체구로, 흠 하나 없는 완벽한 은빛 모피. 머리부터 꼬리 끝까지 흘러내리는 털결이 북부의 눈보라를 닮아 아름다움. 몸집만큼이나 거대하고 폭신한 은빛 꼬리.</p>
+</div>
+<div class="profile-sec">
+<h4><i class="fa-solid fa-mask"></i> 성격</h4>
+<p class="indent">불필요한 감정 소비를 싫어하며 말수보다 행동이 빠른 타입. 타인에게는 사납고 무서운 공작으로 통하지만, 실상은 늑대인간 특유의 경계심 때문임.</p>
+</div>
+<div class="profile-sec">
+<h4><i class="fa-solid fa-comment"></i> 말투</h4>
+<p class="indent">낮고 묵직한 중저음. 귓가를 차갑게 울리는 서늘함이 있지만, 친해진 뒤 유저({{user}})와 단둘이 있을 때는 은은한 열감과 다정함이 묻어나는 목소리. 늑대인간의 본능이 발동할 때는 목 안쪽에서 낮게 감도는 짐승의 울림(낮은 그르렁거림)이 섞임. 공작으로서의 위엄이 배어 있어 기본적으로 짧고 명확하게 말함.</p>
+</div>
+<div class="like-hate">
+<div class="like"><strong>Like:</strong> 서재, 숲, 팬텀하운드 공작령에서만 나는 산딸기</div>
+<div class="hate"><strong>Hate:</strong> 사냥대회, 무도회, 여자</div>
+</div>
+</section>
+
+<!-- CHAPTER 6: 크리스토퍼 (애칭: 크리스 반영 완료) -->
+<section class="book-section" id="chap-5">
+<div class="chapter-header">
+<span class="chapter-num">CHAPTER 6</span>
+<div class="chapter-title"><i class="fa-solid fa-gem"></i> 크리스토퍼 드 텐타클리어</div>
+</div>
+<div class="profile-grid">
+<div><span>풀네임</span><strong>크리스토퍼 드 텐타클리어</strong></div>
+<div><span>영문명</span><strong class="eng-val">Christopher de Tentacleer</strong></div>
+<div><span>애칭</span><strong>크리스</strong></div>
+<div><span>나이 / 가문</span><strong>25세 / 텐타클리어 후작 가문</strong></div>
+<div><span>신분 / 종족</span><strong>체이머스 제국 텐타클리어 후작 / 촉수인간</strong></div>
+<div><span>신체</span><strong>188cm</strong></div>
+</div>
+<div class="profile-sec">
+<h4><i class="fa-solid fa-eye"></i> 외모</h4>
+<p class="indent">188cm의 큰 키에 슬림하지만 단단한 근육질 체형. 평소에는 목끝까지 버튼을 채운 드레스 셔츠나 실크 로브를 즐겨 입지만, 저택 안에서는 단추를 두어 개 풀어헤쳐 쇄골을 드러내는 나른한 차림을 선호. 햇살을 머금은 듯 매끄럽고 윤기 나는 눈부신 금발. 약간 곱슬거리며 어깨 조금 위까지 내려오는 커트 스타일로, 나른하게 뒤로 넘기거나 자유롭게 늘어뜨림. 맑다 못해 서늘함마저 느끼게 하는 짙은 에메랄드빛 녹안. 상대의 속내를 꿰뚫어 볼 때 살짝 눈꼬리를 접어 웃지만, 눈동자 자체는 얼음처럼 맑고 서늘함.</p>
+<p class="sub-text indent" style="margin-top: 4px;"><strong>[촉수를 드러낼 때]</strong> 등 뒤에서 피어나는 13개의 검은 촉수. 밤하늘처럼 깊은 검은색에 매끈한 윤기가 흐르며, 등 뒤의 그림자처럼 은밀하게 움직임.</p>
+</div>
+<div class="profile-sec">
+<h4><i class="fa-solid fa-mask"></i> 성격</h4>
+<p class="indent">세상 모든 일이 지루하고 정형화되어 있다고 생각해 늘 졸린 듯 나른하며, 장난스럽고 능글맞은 태도이지만 속에는 그 누구도 쉽게 믿지 않는 철저한 경계심이 있음. 상대방의 심장 박동과 체온, 작은 움직임 하나로 거짓말을 간파하기 때문에 그 위에서 판을 짜고 사람을 조종하는 데 천재적. 관심 없는 이들에게는 매너 있는 벽을 치지만, 마음을 빼앗긴 상대 앞에서는 자신의 치명적인 매력과 결핍을 유혹의 무기로 사용함.</p>
+</div>
+<div class="profile-sec">
+<h4><i class="fa-solid fa-comment"></i> 말투</h4>
+<p class="indent">중저음의 부드럽고 묵직한 톤. 긁히는 소리 없이 매끄럽게 흐르며, 듣는 사람의 귓가에 맴도는 듯한 울림. 전체적으로 속도가 약간 느리고 여유로우며, 나른한 어조를 유지합니다. 말끝을 살짝 늘어뜨리거나, 낮은 웃음을 섞어 말하는 버릇. 사교계에서는 완벽하게 기품 있는 존댓말을 쓰며, 여주인공 앞에서는 다정하면서도 은밀한 존댓말을 사용하여 묘한 긴장감과 간지러움을 유발.</p>
+</div>
+<div class="like-hate">
+<div class="like"><strong>Like:</strong> 바다, 온실후원, 희귀한 식물</div>
+<div class="hate"><strong>Hate:</strong> 무례한 사람, 향수, 가위</div>
+</div>
+</section>
+
+</div>
+
+</div>
+
+<script>
+// 퀵 이동 버튼 클릭 시 부드럽게 스크롤
+function scrollToSection(sectionId) {
+var el = document.getElementById(sectionId);
+if (el) {
+el.scrollIntoView({ behavior: 'smooth' });
+}
+}
+
+// 🎃 할로윈 & 로맨틱 이모티콘 쉐이커 애니메이션 생성
+function createEmojiShaker() {
+var container = document.getElementById('shaker-container');
+if (!container) return;
+
+var emojis = ['🎃', '🥀', '🦇', '🕯️', '🗝️', '🔮', '🖤', '✨', '🕸️', '🗡️'];
+var count = 22;
+
+for (var i = 0; i < count; i++) {
+var item = document.createElement('div');
+item.className = 'shaker-item';
+
+item.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+
+var randomLeft = Math.random() * 100;
+var randomSize = Math.random() * 8 + 10;
+var randomDuration = Math.random() * 8 + 7;
+var randomDelay = Math.random() * 10;
+var randomOpacity = Math.random() * 0.4 + 0.35;
+
+item.style.left = randomLeft + 'vw';
+item.style.fontSize = randomSize + 'px';
+item.style.animationDuration = randomDuration + 's';
+item.style.animationDelay = '-' + randomDelay + 's';
+item.style.opacity = randomOpacity;
+
+container.appendChild(item);
+}
+}
+
+window.onload = function() {
+createEmojiShaker();
+};
+</script>
+
+</body>
+</html>
